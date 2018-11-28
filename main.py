@@ -12,14 +12,25 @@ from matplotlib.animation import FuncAnimation
 import numpy as np
 import math
 
+'''
+Constants for optimizer
+'''
 beta1 = 0.9
 beta2 = 0.999
 eps = 1e-08
+lr = 0.1
+'''
+Memory variables for ADAM optimizer
+'''
 m = 0
 v = 0
-lr = 0.1
 
 def func_x2(x):
+    '''
+    The target function.
+    You can modify the graph by
+    defining target function here
+    '''
     return x**2
 
 def draw_func(f, xrange):
@@ -57,7 +68,13 @@ def main():
     def update(frame):
         x = xdata[-1]
         g = 2 * x
-        x_ = x - adam(g)
+        '''
+        You can choose which algorithm we use ADAM, or SGD, here
+        '''
+        if True:
+            x_ = x - adam(g)
+        else:
+            x_ = x - sgd(g)
         y_ = func_x2(x_)
         if False:
             xdata.append(x_)
@@ -72,7 +89,10 @@ def main():
     if True:
         ani = FuncAnimation(fig, update, interval=0, frames=180,
                             init_func=init, blit=True)
-        ani.save('out.gif', writer='imagemagick', fps=20)
+        if True:  # Show the animation instantly
+            plt.show()
+        else:  # Save the animation
+            ani.save('out.gif', writer='imagemagick', fps=20)
     else:
         while True:
             update(None)
