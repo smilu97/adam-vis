@@ -20,6 +20,9 @@ def draw_func(f, xrange):
     ln, = plt.plot(x, y)
     return ln
 
+def sgd(g, lr):
+    return g * lr
+
 def main():
 
     xrange = (-5.0, 5.0)
@@ -35,22 +38,19 @@ def main():
         ax.set_ylim(-0.5, 20)
         return ln, ln2
 
-    def update_sgd(frame):
+    def update(frame):
         x = xdata[-1]
         g = 2 * x
         lr = 0.01
-        x_ = x - g * lr
+        x_ = x - sgd(g, lr)
         y_ = func_x2(x_)
         xdata.append(x_)
         ydata.append(y_)
         ln2.set_data(xdata, ydata)
         print('update: {}, {}'.format(x_, y_))
         return ln, ln2
-    
-    def update_adam(frame):
-        return ln, ln2
 
-    ani = FuncAnimation(fig, update_sgd, frames=100,
+    ani = FuncAnimation(fig, update, frames=100,
                         init_func=init, blit=True)
 
     plt.show()
